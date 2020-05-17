@@ -1,0 +1,128 @@
+version: '3'
+services:
+    #WORKSPACE CONTAINER 
+    workspace:
+        build:
+            context: ./docker/workspace
+        container_name: workspace
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www
+        volumes:
+            - ./src/:/var/www
+        networks:
+            - frontend
+            - backend
+
+
+    #PHP SERVICE
+    php-fpm:
+        build:
+            context: ./docker/php-fpm
+        image: php:7.4-fpm
+        container_name: php-fpm
+        restart: unless-stopped
+        tty: true
+        environment:
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+        working_dir: /var/www
+        volumes:
+            - ./src/:/var/www
+            - ./docker/php-fpm/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - backend
+
+    #NGINX SERVICE
+    nginx:
+        build:
+            context: ./docker/nginx
+            args:
+              - CHANGE_SOURCE=false
+              - PHP_UPSTREAM_CONTAINER=php-fpm
+              - PHP_UPSTREAM_PORT=9000
+              - http_proxy
+              - https_proxy
+              - no_proxy
+        container_name: nginx
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./src/:/var/www
+            - ./docker/logs/nginx:/var/log/nginx
+            - ./docker/nginx/sites:/etc/nginx/sites-available
+            - ./docker/nginx/ssl:/etc/nginx/ssl
+        depends_on:
+            - php-fpm
+        networks:
+            - frontend
+            - backend
+
+    #MySQL Service
+    mysql:
+        image: mysql:5.7.24
+        container_name: mysql
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: laravel
+            MYSQL_ROOT_PASSWORD: root
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        volumes:
+            - dbdata:/var/lib/mysql/
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - backend
+
+    #PHPMYADMIN
+    phpmyadmin:
+      build: ./docker/phpmyadmin
+      environment:
+        - PMA_ARBITRARY=1
+        - MYSQL_USER=default
+        - MYSQL_PASSWORD=secret
+        - MYSQL_ROOT_PASSWORD=secret
+      ports:
+        - "8080:80"
+      depends_on:
+        - "mysql"
+      networks:
+        - frontend
+        - backend 
+    #RABBIT MQ
+    rabbitmq:
+      build: ./docker/rabbitmq
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+        - "15671:15671"
+      privileged: true
+      environment:
+        - RABBITMQ_DEFAULT_USER=guest
+        - RABBITMQ_DEFAULT_PASS=guest
+      hostname: rabbitmq-service
+      volumes:
+        - dbdata/rabbitmq:/var/lib/rabbitmq
+      depends_on:
+        - php-fpm
+      networks:
+        - backend
+
+
+#Docker Networks
+networks:
+    frontend:
+      driver: bridge
+    backend:
+      driver: bridge
+
+#Volumes
+volumes:
+    dbdata:
+        driver: local

@@ -68,7 +68,7 @@ services:
         restart: unless-stopped
         tty: true
         ports:
-            - "3306:3306"
+            - "3307:3306"
         environment:
             MYSQL_DATABASE: laravel
             MYSQL_ROOT_PASSWORD: root
@@ -83,6 +83,7 @@ services:
     #PHPMYADMIN
     phpmyadmin:
       build: ./docker/phpmyadmin
+      container_name: phpMyAdmin
       environment:
         - PMA_ARBITRARY=1
         - MYSQL_USER=default
@@ -98,6 +99,7 @@ services:
     #RABBIT MQ
     rabbitmq:
       build: ./docker/rabbitmq
+      container_name: rabbitmq
       ports:
         - "5672:5672"
         - "15672:15672"
@@ -108,7 +110,7 @@ services:
         - RABBITMQ_DEFAULT_PASS=guest
       hostname: rabbitmq-service
       volumes:
-        - dbdata/rabbitmq:/var/lib/rabbitmq
+        - rbmqdata:/var/lib/rabbitmq
       depends_on:
         - php-fpm
       networks:
@@ -125,4 +127,6 @@ networks:
 #Volumes
 volumes:
     dbdata:
+        driver: local
+    rbmqdata:
         driver: local

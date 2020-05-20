@@ -13,14 +13,15 @@ class AstrologistSeeder extends Seeder
     public function run()
     {
         //
-        $faker = Faker\Factory::create('ru_RU');
+        $faker = Faker\Factory::create('en_US');
         foreach (range(1,10) as $index) {
             Astrologist::create([
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
                 'patronymic_name' => $faker->firstNameMale,
                 'email' => $faker->email,
-                'bio' => $faker->realText(300)
+                'bio' => $faker->text(300),
+                'photo_name' => $index.'.png'
             ]);
         }
     }

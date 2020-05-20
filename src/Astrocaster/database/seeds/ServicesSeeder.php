@@ -13,11 +13,11 @@ class ServicesSeeder extends Seeder
     public function run()
     {
         //
-        $faker = Faker\Factory::create('ru_RU');
+        $faker = Faker\Factory::create('en_US');
         foreach (range(1,6) as $index) {
             Service::create([
-                'service_name' => $faker->realText(50),
-                'description' => $faker->realText(500)
+                'service_name' => $faker->text(50),
+                'description' => $faker->text(500)
             ]);
         }
     }

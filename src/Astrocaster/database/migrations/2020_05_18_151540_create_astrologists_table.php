@@ -19,6 +19,7 @@ class CreateAstrologistsTable extends Migration
             $table->string('last_name',30);
             $table->string('patronymic_name',30)->nullable();
             $table->string('email',50);
+            $table->string('photo_name',256);
             $table->longText('bio');
             $table->timestamps();
         });

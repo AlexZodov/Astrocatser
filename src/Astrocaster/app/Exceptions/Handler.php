@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Mapper\Error;
+use App\Mapper\ResponseModelMapper;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -48,8 +51,12 @@ class Handler extends ExceptionHandler
      *
      * @throws \Throwable
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $exception): Response
     {
-        return parent::render($request, $exception);
+        //override default handler to wrap all exceptions into ResponseModelMapper
+        //to have unified response structure
+        $response = new ResponseModelMapper(['errors'=>new Error($exception)]);
+
+        return response()->json($response->toArray());
     }
 }

@@ -17,3 +17,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('astrologist', 'AstrologistController', [
+    'only' => ['index', 'show'],
+    'names' => [
+        'index' => 'astrologist::index',
+        'show' => 'astrologist::show',
+    ]
+]);
+
+Route::resource('order', 'OrderController', [
+    'only' => ['store'],
+    'names' => [
+        'store' => 'order::store'
+    ]
+]);

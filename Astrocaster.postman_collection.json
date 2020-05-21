@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "6c83617b-61c9-49de-b2dd-be9149f8b074",
+		"name": "Astrocaster",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"vasya pupkin\",\n\t\"email\":\"vasyapupkin1990@gmail.com\",\n\t\"astrologist_id\":1,\n\t\"service_id\":3\n}"
+				},
+				"url": {
+					"raw": "http://astrocaster.test/api/order",
+					"protocol": "http",
+					"host": [
+						"astrocaster",
+						"test"
+					],
+					"path": [
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Astrologists list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://astrocaster.test/api/astrologist",
+					"protocol": "http",
+					"host": [
+						"astrocaster",
+						"test"
+					],
+					"path": [
+						"api",
+						"astrologist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Specific Astrologist",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://astrocaster.test/api/astrologist/1",
+					"protocol": "http",
+					"host": [
+						"astrocaster",
+						"test"
+					],
+					"path": [
+						"api",
+						"astrologist",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

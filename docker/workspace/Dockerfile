@@ -74,13 +74,5 @@ RUN curl -s http://getcomposer.org/installer | php && \
     echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc && \
     mv composer.phar /usr/local/bin/composer
 
-# Source the bash
-RUN . ~/.bashrc
-
-RUN cd /var/www/Astrocaster && \
-    composer update && \
-    php artisan storage:link && \
-    php artisan migrate && \
-    php artisan db:seed && \
-    php artisan vendor:publish --provider="PulkitJalan\Google\GoogleServiceProvider" --tag="config" && \
-    php artisan queue:work
+RUN apt-get install -y supervisor
+COPY queue-supervisor.conf /etc/supervisor/conf.d/queue.conf

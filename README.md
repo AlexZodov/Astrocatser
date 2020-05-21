@@ -4,7 +4,7 @@ Test Astrocaster API
 # Initial instructions
 
 * `docker-compose up -d`
-* `docker exec workspace bash "/var/www/Astrocaster/init.sh"`
+* `docker exec workspace bash "/var/www/Astrocaster/init.sh"` - on each restart of container 'workspace'
 * Write to local hosts file:
  - `127.0.0.1 astrocaster.test` 
  - `127.0.0.1 phpmyadmin.test` 

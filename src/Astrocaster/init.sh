@@ -22,5 +22,6 @@ else
     echo ">>>>  Done <<<<"
 fi
 
-supervisord
+chmod +x supervisorctl.sh
+./supervisorctl.sh start
 

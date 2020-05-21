@@ -16,15 +16,15 @@ Test Astrocaster API
 
 # Usage
  
- ##Retrieving astrologists list:
+ ## Retrieving astrologists list:
   
   GET `/api/astrologist`
  
- ##Retrieving single astrologist data:
+ ## Retrieving single astrologist data:
  
  GET `/api/astrologist/2`
   
- ##Creating order:
+ ## Creating order:
  
  POST `/api/order`, Payload: `{"name":"vasya pupkin123123",
                                	"email":"vasyapupkin1990@gmail.com",
@@ -52,6 +52,6 @@ Test Astrocaster API
  
  page & size params - define the desired page and page size for pagination logic, by default(if not provided in query) assumed page=1, size=10
  
-#Postman collection
+# Postman collection
 Postman collection can be found in `Astrocaster.postman_collection.json`
  
